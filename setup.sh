@@ -4,11 +4,11 @@ CURRENT_DIR=$PWD
 
 ## Get reveal.js
 REVEAL_VERSION=3.7.0
-REVEAL_SRC=https://github.com/hakimel/reveal.js/archive/${REVEAL_VERSION}.tar.gz
-wget ${REVEAL_SRC}
+## REVEAL_SRC=https://github.com/hakimel/reveal.js/archive/${REVEAL_VERSION}.tar.gz
+## curl -O ${REVEAL_SRC}
 
 ## extract
-tar xvzf ${REVEAL_VERSION}.tar.gz
+tar xvzf reveal.js-${REVEAL_VERSION}.tar
 
 ## remove any previously existing folder
 rm -rf slides
@@ -17,7 +17,7 @@ rm -rf slides
 mv reveal.js-${REVEAL_VERSION} slides
 
 ## remove downloaded file
-rm ${REVEAL_VERSION}.tar.gz
+## rm ${REVEAL_VERSION}.tar
 
 ## cleanup (optional)
 rm -rf \
