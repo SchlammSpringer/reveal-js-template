@@ -58,6 +58,10 @@ img[alt^=funx-] {
     height: 550px;
 }
 
+img[alt^=white-] {
+    background-color: white !important
+}
+
 img[alt^=fullscreen-] {
     width: 100%;
 }

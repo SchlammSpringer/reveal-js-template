@@ -1,13 +1,14 @@
 /**
  * DATEV-SCC theme for reveal.js
  * Author: Christoph Welcz
+ * Edited: Daniel Hoerner
  *
  * based on Solarized Light theme for reveal.js.
  * Author: Achim Staebler
  */
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic);
-@import url(../../lib/font/league-gothic/league-gothic.css);
 @import url(../../lib/font/fira-code-1.205/fira_code.css);
+@import url('https://fonts.googleapis.com/css?family=Lilita+One');
 
 /*********************************************
  * GLOBAL STYLES
@@ -52,11 +53,11 @@ body {
 .reveal h6 {
     margin: 0 0 20px 0;
     color: #0c8b7a;
-    font-family: "League Gothic", Impact, sans-serif;
+    font-family: "Lilita One";
     font-weight: normal;
     line-height: 1.2;
     letter-spacing: normal;
-    text-transform: uppercase;
+   /* text-transform: uppercase;*/
     word-wrap: break-word;
 }
 

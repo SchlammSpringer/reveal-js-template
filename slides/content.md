@@ -1,19 +1,103 @@
-# Title of presentation
+# Spock 
 
-## Subtitle
-
-- <i class="fa fa-user"></i>&nbsp;Christoph Welcz
-- <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;01.01.1900
-- <i class="fa fa-twitter" aria-hidden="true"></i>&nbsp;[@ChristophWelcz](https://twitter.com/ChristophWelcz)
-- <i class="fa fa-github" aria-hidden="true"></i>&nbsp;[github.com/enolive/some-project](https://github.com/enolive/some-project)
+- <i class="fa fa-user"></i>&nbsp;Daniel Hörner
+- <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;13.12.2018
+- <i class="fa fa-twitter" aria-hidden="true"></i>&nbsp;[@KuschelKrolik](https://twitter.com/KuschelKrolik)
+- <i class="fa fa-bitbucket" aria-hidden="true"></i>&nbsp;[todo](https://TODO)
 
 <--->
 
-## Second slide
-
-foo
+## Behaviour Driven Development
 
 <-->
+### Story: Returns go to stock
+
+As a store owner
+In order to keep track of stock
+I want to add items back to stock when they're returned.
+
+<-->
+```gherkin
+Scenario 1: Refunded items should be returned to stock
+Given that a customer previously bought a black sweater from me
+And I have three black sweaters in stock.
+When they return the black sweater for a refund
+Then I should have four black sweaters in stock.
+```
+
+<-->
+
+```gherkin
+Scenario 2: Replaced items should be returned to stock
+Given that a customer previously bought a blue garment from me
+And I have two blue garments in stock
+And three black garments in stock.
+When they return the blue garment for a replacement in black
+Then I should have three blue garments in stock
+And two black garments in stock.
+```
+
+<--->
+
+## Spock vs. Junit
+
+![white-spockVsJunit](resources/spockVsJunit.png)
+
+<--->
+
+### Hello Spock
+```groovy
+class HelloSpockSpec extends Specification {
+  def "length of Spock's and his friends' names"() {
+    expect:
+    name.size() == length
+
+    where:
+    name     | length
+    "Spock"  | 5
+    "Kirk"   | 4
+    "Scotty" | 6
+  }
+}  
+```
+
+<--->
+
+## Data Driven Testing
+
+<-->
+
+### Value Array
+```groovy
+def "maximum of two numbers"() {
+    expect:
+    Math.max(a, b) == c
+
+    where:
+    a << [3, 5, 9]
+    b << [7, 4, 9]
+    c << [7, 5, 9]
+  }
+```
+
+<-->
+
+### Data Tables
+```groovy
+@Unroll
+def "minimum of #a and #b is #c"() {
+    expect:
+    Math.min(a, b) == c
+
+    where:
+    a | b || c
+    3 | 7 || 3
+    5 | 4 || 4
+    9 | 9 || 9
+  }
+```
+
+<--->
 
 ### Vertical Slide
 
@@ -94,17 +178,7 @@ let result = list.map(x => x + 1); // oder eine "addOne" Funktion nehmen
 console.log(result)
 ```
 
-```haskell
-greet :: String -> String
-greet name = "Hello, " ++ name ++ "!"
-```
-
 <--->
-
-```csharp
-// expression
-public int AddOne(int i) => i + 1;
-```
 
 <pre>
 <code data-noescape data-trim class="lang-csharp hljs">
@@ -118,34 +192,6 @@ isBetweenFiveAndTen(7); // TRUE
 </code>
 </pre>
 
-<--->
-
-<pre>
-<code data-noescape data-trim class="lang-fsharp hljs">
-let add1 x = x + 1
-let times2 x = x * 2
-
-let add1Times2 x = times2(add1 x) // ok...
-<span class="mycodemark-always">
-let add1Times2 = add1 >> times2   // ">>": composition operator
-</span>
-</code>
-</pre>
-
-<pre>
-<code data-noescape data-trim class="lang-fsharp hljs">
-open System
-type Person = { FirstName: string; LastName: string }
-let p = {FirstName = "Joe"; LastName = "Smith"}
-let abbreviate (s: string) = s.[0..1].ToLower()
-let abbreviateName p = abbreviate(p.FirstName) + abbreviate(p.LastName)
-let appendDomain (s: string) = s + "@company.com"
-<span class="mycodemark-always">
-let emailFor = abbreviateName >> appendDomain
-</span>
-p |> emailFor // josm@company.com
-</code>
-</pre>
 
 <--->
 
