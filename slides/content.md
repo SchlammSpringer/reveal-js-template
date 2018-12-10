@@ -134,24 +134,35 @@ Actual   :3
 
 <-->
 ### Mocks & Stubs & Spies
+```groovy
+def subscriberMock = Mock(Subscriber.class)
+
+Subscriber subscriberStub = Stub()
+
+Subscriber subscriberSpy = Spy{
+    receive(_) >> "ok"
+}
+```
 
 <-->
 #### Simple
 ```groovy
-def entityManager = Mock(EntityManager.class)
+subscriber.receive(_) >> "ok"
+```
 
-entityManager.persist(_ as Customer) >> { it.setId(123L) }
+<-->
+#### Sequences
+```groovy
+subscriber.receive(_) >>> ["ok", "error", "error", "ok"]
 ```
 
 <-->
 #### Complex
 ```groovy
-def userRepository = Stub(UserRepository.class)
-
-userRepository
-    .saveCustomer(_, _) >> { String firstName, String lastName ->
-        Customer newCustomer = new Customer(firstName, lastName)
-        newCustomer.setFullName(firstName + " " + lastName)
+def userRepository = Stub(UserRepository.class){
+    saveCustomer(_, _) >> { String firstName, String lastName ->
+        def newCustomer = new Customer(firstName, lastName)
+        newCustomer.setFullName("$lastName, $firstName")
         newCustomer.setSince(LocalDate.now())
         return newCustomer
 }
@@ -190,7 +201,19 @@ _ * subscriber.receive("hello")      // any number of calls,
 1 * subscriber.receive(_)           // any single argument (with null)
 1 * subscriber.receive(*_)          // any argument list (with empty)
 1 * subscriber.receive(!null)       // any non-null argument
-1 * subscriber.receive(_ as String) // any non-null argument that is-a String
+1 * subscriber.receive(_ as String) // any non-null argument String
 1 * subscriber.receive({ it.size() > 3 }) // with given predicate
 ```
+
+<-->
+#### At Mock Creation Time
+```groovy
+Subscriber subscriber = Mock {
+        1 * receive("hello") >> "ok"
+        1 * receive("goodbye") >> "fail"
+    }
+```
+
+<--->
+MUCHO MERCI
 
