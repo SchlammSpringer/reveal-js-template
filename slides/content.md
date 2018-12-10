@@ -132,102 +132,65 @@ Actual   :3
 
 ## Interaction Based Testing
 
-bar
+<-->
+### Mocks & Stubs & Spies
 
-<--->
+<-->
+#### Simple
+```groovy
+def entityManager = Mock(EntityManager.class)
 
-<section tagcloud large>
-    <span tagcloud-weight="16">Unit </span>
-    <span tagcloud-weight="44">Currying </span>
-    <span tagcloud-weight="29">Higher Order Functions </span>
-    <span tagcloud-weight="10">Event Sourcing/CQRS </span>
-    <span tagcloud-weight="35">Applicatives </span>
-    <span tagcloud-weight="13">Monad </span>
-    <span tagcloud-weight="30">filter/map/reduce </span>
-    <span tagcloud-weight="18">bind </span>
-    <span tagcloud-weight="40">side effects </span>
-    <span tagcloud-weight="22">purity </span>
-    <span tagcloud-weight="39">honest functions </span>
-    <span tagcloud-weight="19">Functor </span>
-    <span tagcloud-weight="50">Immutability </span>
-    <span tagcloud-weight="34">category theory </span>
-    <span tagcloud-weight="15">Monoid </span>
-    <span tagcloud-weight="29">tuples  </span> 
-    <span tagcloud-weight="17">discriminated unions </span>
-    <span tagcloud-weight="20">elevated types </span>
-    <span tagcloud-weight="33">Typed FP </span>
-    <span tagcloud-weight="28">Either </span>
-    <span tagcloud-weight="34">Option </span>
-    <span tagcloud-weight="14">arrow notation </span>
-    <span tagcloud-weight="24">railway oriented programming </span>
-    <span tagcloud-weight="26">Lambda </span>
-    <span tagcloud-weight="12">Composition </span>
-<section>
-
-<--->
-
-<section tagcloud large>
-This
-should 
-change
-with
-every
-reload
-</section>
-
-<--->
-
-## Just an image
-
-![funx-logo](resources/DATEV-SCC-Logo.png)
-
-<--->
-
-## Too much content
-
-<!-- .slide: class="too-much-content" -->
-
-- Line 1
-- Line 2
-- Line 3
-- Line 4
-- Line 5
-- Line 6
-- Line 7
-- Line 8
-- Line 9
-- Line 10
-- Line 11
-- Line 12
-- Line 13
-
-<--->
-
-```javascript
-let list = [1, 2, 3, 4, 5];
-let result = list.map(x => x + 1); // oder eine "addOne" Funktion nehmen
-console.log(result)
+entityManager.persist(_ as Customer) >> { it.setId(123L) }
 ```
 
-<--->
+<-->
+#### Complex
+```groovy
+def userRepository = Stub(UserRepository.class)
 
-<pre>
-<code data-noescape data-trim class="lang-csharp hljs">
-Func&lt;int, bool> isLargerThanFive = x => x > 5;
-Func&lt;int, bool> isSmallerThenTen = x => x < 10;
+userRepository
+    .saveCustomer(_, _) >> { String firstName, String lastName ->
+        Customer newCustomer = new Customer(firstName, lastName)
+        newCustomer.setFullName(firstName + " " + lastName)
+        newCustomer.setSince(LocalDate.now())
+        return newCustomer
+}
+```
 
-<span class="mycodemark-always">Func&lt;int, bool> isBetweenFiveAndTen = x => 
-    isLargerThanFive(x) && isSmallerThenTen(x);</span>
+<-->
+### Cardinality
+```groovy
+1 * subscriber.receive("hello")      // exactly one call
+0 * subscriber.receive("hello")      // zero calls
+(1..3) * subscriber.receive("hello") // between one and three calls
+(1.._) * subscriber.receive("hello") // at least one call
+(_..3) * subscriber.receive("hello") // at most three calls
+_ * subscriber.receive("hello")      // any number of calls,
+                                     // including zero
+```
 
-isBetweenFiveAndTen(7); // TRUE
-</code>
-</pre>
+<-->
+### Target & Method Constraint
+```groovy
+1 * subscriber.receive("hello") // a call to 'subscriber'
+1 * _.receive("hello")          // a call to any mock object
 
+1 * subscriber.receive("hello") // a method named 'receive'
+1 * subscriber./r.*e/("hello")  // a method whose name matches 
+                                // the given regular expression
+```
 
-<--->
+<-->
+### Arguments
+```groovy
 
-<!-- .slide: class="outline" data-background-image="resources/DATEV-SCC-Logo.png" data-background-size="cover" data-state="dimmed-less"-->
-
-Using background images...
-
+1 * subscriber.receive("hello")     // an argument is equal "hello"
+1 * subscriber.receive(!"hello")    // an argument is unequal "hello"
+1 * subscriber.receive()            // the empty argument list
+1 * subscriber.receive(_)           // any single argument (with null)
+1 * subscriber.receive(*_)          // any argument list (with empty)
+1 * subscriber.receive(!null)       // any non-null argument
+1 * subscriber.receive(_ as String) // any non-null argument that is-a String
+1 * subscriber.receive({ it.size() > 3 }) // with given predicate
+```
 
