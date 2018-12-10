@@ -45,20 +45,34 @@ And two black garments in stock.
 
 <--->
 
-### Hello Spock
+## Hello Spock
 ```groovy
 class HelloSpockSpec extends Specification {
-  def "length of Spock's and his friends' names"() {
-    expect:
-    name.size() == length
-
-    where:
-    name     | length
-    "Spock"  | 5
-    "Kirk"   | 4
-    "Scotty" | 6
+  def "Should be able to remove from list"() {
+    given:
+        def list = [1, 2, 3, 4]
+ 
+    when:
+        list.remove(0)
+ 
+    then:
+        list == [2, 3, 4]
   }
 }  
+```
+
+<--->
+
+## Readable Errors
+
+```groovy
+Condition not satisfied:
+ 
+list == [1, 3, 4]
+|    |
+|    false
+[2, 3, 4]
+ <Click to see difference>
 ```
 
 <--->
@@ -97,9 +111,26 @@ def "minimum of #a and #b is #c"() {
   }
 ```
 
+<-->
+
+### Readable Error - Again
+
+```groovy
+Condition not satisfied:
+ 
+Math.min(a, b) == c
+     |   |  |  |  |
+     3   3  7  |  1
+               false
+ 
+Expected :1
+ 
+Actual   :3
+```
+
 <--->
 
-### Vertical Slide
+## Interaction Based Testing
 
 bar
 
