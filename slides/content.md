@@ -3,7 +3,7 @@
 - <i class="fa fa-user"></i>&nbsp;Daniel Hörner
 - <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;13.12.2018
 - <i class="fa fa-twitter" aria-hidden="true"></i>&nbsp;[@KuschelKrolik](https://twitter.com/KuschelKrolik)
-- <i class="fa fa-bitbucket" aria-hidden="true"></i>&nbsp;[todo](https://TODO)
+- <i class="fa fa-github" aria-hidden="true"></i>&nbsp;[SchlammSpringer](https://github.com/SchlammSpringer/)
 
 <--->
 
